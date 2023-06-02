@@ -1,4 +1,4 @@
-
+import "../tailwind/techno.css"
 
 const TechStory = () => {
   return (

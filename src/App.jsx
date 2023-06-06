@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./App.css";
 import AddContact from "./Contact-app/components/AddContact";
 import ContactList from "./Contact-app/components/ContactList";
@@ -7,25 +8,18 @@ import Header from "./Contact-app/components/Header";
 // import TechStory from './tailwind/TechStory'
 
 function App() {
-  const contacts = [
-    { 
-      id: "1",
-      name: 'nuci',
-      email: 'nuci@gmail.com'
-    },
-    { 
-      id: "2",
-      name: 'vika',
-      email: 'vikaucxo@gmail.com'
-    },
-  ]
+const [contacts, setContacts] = useState([]);
+
+const addContactHendler = (contact) => {
+  setContacts([...contacts, contact]);
+}
   return (
     <>
       {/* <GalleryHome />
       <TechStory/> */}
       <div className="ui container">
         <Header />
-        <AddContact />
+        <AddContact addContactHendler={addContactHendler} />
         <ContactList contacts={contacts} />
       </div>
     </>

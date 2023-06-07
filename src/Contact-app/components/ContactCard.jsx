@@ -2,7 +2,7 @@ import user from "../contact-image/user.png"
 import PropTypes from "prop-types";
 
 const ContactCard = (props) => {
-    const { name, emaill} = props.contact
+    const { name, email} = props.contact
 
   return (
     <>
@@ -13,7 +13,7 @@ const ContactCard = (props) => {
             {name}  
         </div>
 
-        <div>{emaill}</div>
+        <div>{email}</div>
         <i className="trash alternate outline icon" style={{color: "red", marginTop: "10px"}}></i>
       </div>
       </div>

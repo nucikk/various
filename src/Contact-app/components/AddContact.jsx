@@ -1,56 +1,83 @@
-import React from "react";
+import  { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-class AddContact extends React.Component {
-  state = {
-    name: "",
-    email: "",
-  };
+const AddContact = ({ addContactHandler }) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
-  add = (e) => {
+  const add = (e) => {
     e.preventDefault();
-    if (this.state.name === "" || this.state.email === "") {
-      alert("Please enter");
+    if (name === "" || email === "") {
+      alert("Please enter both name and email");
       return;
     }
-    this.props.addContactHendler(this.state);
-    this.setState({ name: "", email: "" });
+    addContactHandler({ name, email });
+    setName("");
+    setEmail("");
   };
 
-  render() {
-    return (
-      <div className="ui main">
-        <h2>Add Contact</h2>
-        <form action="" className="ui form" onSubmit={this.add}>
-          <div className="field">
-            <label htmlFor="Name">Name</label>
-            <input
-              type="text"
-              name="name"
-              placeholder="name"
-              value={this.state.name}
-              onChange={(e) => this.setState({ name: e.target.value })}
-            />
-          </div>
-          <div className="field">
-            <label htmlFor="Name">email</label>
-            <input
-              type="text"
-              name="email"
-              placeholder="email"
-              value={this.state.email}
-              onChange={(e) => this.setState({ email: e.target.value })}
-            />
-          </div>
-          <button className="ui button blue">Add</button>
-        </form>
-      </div>
-    );
-  }
-}
+  useEffect(() => {
+    const storedName = localStorage.getItem("contactName");
+    const storedEmail = localStorage.getItem("contactEmail");
+
+    if (storedName && storedEmail) {
+      setName(storedName);
+      setEmail(storedEmail);
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("contactName", name);
+    localStorage.setItem("contactEmail", email);
+  }, [name, email]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
+
+  return (
+    <div className="ui main">
+      <h2>Add Contact</h2>
+      <form className="ui form" onSubmit={add}>
+        <div className="field">
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            name="name"
+            placeholder="name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            autoComplete="off"
+          />
+        </div>
+        <div className="field">
+          <label htmlFor="email">Email</label>
+          <input
+            type="text"
+            name="email"
+            placeholder="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            autoComplete="off"
+          />
+        </div>
+        <button className="ui button blue">Add</button>
+      </form>
+    </div>
+  );
+};
 
 AddContact.propTypes = {
-  addContactHendler: PropTypes.func.isRequired,
+  addContactHandler: PropTypes.func.isRequired,
 };
 
 export default AddContact;

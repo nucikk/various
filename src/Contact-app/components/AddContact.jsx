@@ -1,6 +1,7 @@
 import  { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
+
 const AddContact = ({ addContactHandler }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
